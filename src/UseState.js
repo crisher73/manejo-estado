@@ -1,9 +1,14 @@
 import React from "react";
 
+const SECURITY_CODE = paradigma;
+
 function UseState({ name }) {
     // estado error
-    const [error, setError] = React.useState(true);
+    const [error, setError] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
+    const [value, setValue] =React.useState('');
+
+    console.log(value)
 
     React.useEffect(() => {
         console.log("Iniciando el efecto");
@@ -33,7 +38,14 @@ function UseState({ name }) {
                 <p>Cargando...</p>
             )}
 
-            <input type='text' placeholder='código de seguridad' />
+            <input 
+            type='text'
+            placeholder='código de seguridad'
+            value={value}
+            onChange={(event)=>{
+                setValue(event.target.value);
+            }}
+            />
             <button
                 // onClick={()=>setError(!error)}
                 onClick={() => setLoading(true)}
