@@ -1,6 +1,6 @@
 import React from "react";
 
-const SECURITY_CODE = paradigma;
+const SECURITY_CODE ='paradigma';
 
 function UseState({ name }) {
     // estado error
@@ -17,13 +17,19 @@ function UseState({ name }) {
             setTimeout(() => {
                 console.log("Haciendo la validación");
 
-                setLoading(false);
+                if (value === SECURITY_CODE) {
+                    setLoading(false);
+                    setError(false);
+                }else{
+                    setError(true);
+                    setLoading(false);
+                }
 
                 console.log("Finalizando la validación");
-            }, 3000);
+            }, 1000);
         }
 
-        console.log("Finzalizando el efecto");
+        console.log("Finalizando el efecto");
     }, [loading]);
 
     return (
@@ -31,8 +37,8 @@ function UseState({ name }) {
             <h2>Eliminar {name}</h2>
             <p>Por favor, escriba el código de seguridad.</p>
 
-            {error && (
-                <p>El código es es incorrecto</p>
+            {(error && !loading) && (
+                <p>El código es incorrecto</p>
             )}
             {loading && (
                 <p>Cargando...</p>
