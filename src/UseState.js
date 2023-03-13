@@ -7,6 +7,8 @@ function UseState({ name }) {
         value: '',
         error: false,
         loading: false,
+        deleted:false,
+        confirmed:false,
     });
     const [error, setError] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
@@ -26,6 +28,7 @@ function UseState({ name }) {
                         ...state,
                         error:false,
                         loading: false,
+                        confirmed:true,
                     })
                 } else {
                     setState({
@@ -43,6 +46,7 @@ function UseState({ name }) {
         console.log("Finalizando el efecto");
     }, [state.loading]);
 
+   if (!state.deleted && !state.confirmed) {
     return (
         <div>
             <h2>Eliminar {name}</h2>
@@ -76,6 +80,54 @@ function UseState({ name }) {
             >Comprobar</button>
         </div>
     );
+   } else if (!state.deleted && !!state.confirmed) {
+    return (
+        <>
+        <p>Confirma, Quieres eliminarlo?</p>
+        <button
+        onClick={()=>{
+            setState({
+                ...state,
+                deleted:true,
+            });
+        }}
+        >
+            Si, eliminar
+        </button>
+        <button
+          onClick={()=>{
+            setState({
+                ...state,
+                confirmed:false,
+                value:'',
+            });
+        }}
+        >
+            No, me arrepentí
+        </button>
+        </>
+    )
+
+   } else {
+    return(
+        <>
+        <p>Eliminado con éxito</p>
+        <button
+          onClick={()=>{
+            setState({
+                ...state,
+                confirmed:false,
+                deleted: false,
+                value:'',
+            });
+        }}
+        >
+            Resetear, volver atrás.
+        </button>
+        </>
+    )
+
+   }
 }
 
 export { UseState }
