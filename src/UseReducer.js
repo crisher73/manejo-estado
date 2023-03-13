@@ -14,9 +14,9 @@ function UseReducer({ name }) {
                 console.log("Haciendo la validación");
 
                 if (state.value === SECURITY_CODE) {
-                    dispatch({ type: 'CONFIRM' });
+                    dispatch({ type: actionTypes.confirm });
                 } else {
-                    dispatch({ type: 'ERROR' });
+                    dispatch({ type: actionTypes.error });
                 }
 
                 console.log("Finalizando la validación");
@@ -44,13 +44,13 @@ function UseReducer({ name }) {
                     placeholder='código de seguridad'
                     value={state.value}
                     onChange={(event) => {
-                        dispatch({ type: 'WRITE', payload: event.target.value });
+                        dispatch({ type: actionTypes.write, payload: event.target.value });
                         //onWrite(event.target.value);
                     }}
                 />
                 <button
                     onClick={() => {
-                        dispatch({ type: 'CHECK' });
+                        dispatch({ type: actionTypes.check });
                     }}
                 >Comprobar</button>
             </div>
@@ -61,14 +61,14 @@ function UseReducer({ name }) {
                 <p>Confirma, Quieres eliminarlo?</p>
                 <button
                     onClick={() => {
-                        dispatch({ type: 'DELETE' });
+                        dispatch({ type: actionTypes.delete });
                     }}
                 >
                     Si, eliminar
                 </button>
                 <button
                     onClick={() => {
-                        dispatch({ type: 'RESET' });
+                        dispatch({ type: actionTypes.reset });
                     }}
                 >
                     No, me arrepentí
@@ -82,7 +82,7 @@ function UseReducer({ name }) {
                 <p>Eliminado con éxito</p>
                 <button
                     onClick={() => {
-                        dispatch({ type: 'RESET' });
+                        dispatch({ type: actionTypes.reset });
                     }}
                 >
                     Resetear, volver atrás.
@@ -102,38 +102,46 @@ const initialState = {
     confirmed: false,
 }
 
+const actionTypes = {
+    confirm: 'CONFIRM',
+    error: 'ERROR',
+    delete: 'DELETE',
+    check: 'CHECK',
+    reset: 'RESET',
+    write: 'WRITE',
+}
 
 
 const reducerObject = (state, payload) => ({
-    'CONFIRM': {
+    [actionTypes.confirm]: {
         ...state,
         error: false,
         loading: false,
         confirmed: true,
     },
 
-    'ERROR': {
+    [actionTypes.error]: {
         ...state,
         error: true,
         loading: false,
     },
 
-    'WRITE': {
+    [actionTypes.write]: {
         ...state,
         value: payload,
     },
 
-    'CHECK': {
+    [actionTypes.check]: {
         ...state,
         loading: true,
     },
 
-    'DELETE': {
+    [actionTypes.delete]: {
         ...state,
         deleted: true,
     },
 
-    'RESET': {
+    [actionTypes.reset]: {
         ...state,
         confirmed: false,
         deleted: false,
